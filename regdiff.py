@@ -1,7 +1,11 @@
 import sys
 from bs4 import BeautifulSoup
 
-infile = sys.argv[1]
+infile_a = sys.argv[1]
+infile_b = sys.argv[2]
+
+reg_a = []
+reg_b = []
 
 def get_root_elements(path_to_file):
     soup = BeautifulSoup(open(path_to_file), 'lxml')
@@ -29,9 +33,26 @@ def get_path(element):
     #path = [element.name] + [e.attrs for e in element.parents if e.name not in to_remove]
 	return '/'.join(path[::-1])
 
-for i in get_root_elements(infile):
+for i in get_root_elements(infile_a):
 	name_ = i.get('key') if i.get('key') is not None else "(Default)"
 	type_ = i.get('type') if i.get('type') is not None else "(value not set)"
 	data_ = i.get('value') if i.get('type') is not None else "(value not set)"
+	reg_a.append((get_path(i), name_, type_, data_))
+	#print str(get_path(i)) + "\t" + str(name_) + "\t" + str(type_) + "\t" + str(data_)
 
-	print str(get_path(i)) + "\t" + str(name_) + "\t" + str(type_) + "\t" + str(data_)
+for i in get_root_elements(infile_b):
+	name_ = i.get('key') if i.get('key') is not None else "(Default)"
+	type_ = i.get('type') if i.get('type') is not None else "(value not set)"
+	data_ = i.get('value') if i.get('type') is not None else "(value not set)"
+	reg_b.append((get_path(i), name_, type_, data_))
+	
+set_a = set(reg_a)
+set_b = set(reg_b)
+
+changes = set_a^set_b
+
+for c in changes:
+	print(c)
+	print("\n\n")
+
+
