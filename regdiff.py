@@ -31,14 +31,15 @@ def get_path(element):
 	#return [i for j in element.parent.parents] 
     #to_remove = ['[document]', 'body', 'html']
     #path = [element.name] + [e.attrs for e in element.parents if e.name not in to_remove]
-	return '/'.join(path[::-1])
+	return '/'.join(path[::-1][1:])
 
 for i in get_root_elements(infile_a):
 	name_ = i.get('key') if i.get('key') is not None else "(Default)"
 	type_ = i.get('type') if i.get('type') is not None else "(value not set)"
 	data_ = i.get('value') if i.get('type') is not None else "(value not set)"
 	reg_a.append((get_path(i), name_, type_, data_))
-	#print str(get_path(i)) + "\t" + str(name_) + "\t" + str(type_) + "\t" + str(data_)
+	#print str(get_path(i)) + "|" + str(name_) + "|" + str(type_) + "|" + str(data_)
+	print str(get_path(i)) + "|" + str(name_) + "|" + str(data_)
 
 for i in get_root_elements(infile_b):
 	name_ = i.get('key') if i.get('key') is not None else "(Default)"
@@ -51,8 +52,8 @@ set_b = set(reg_b)
 
 changes = set_a^set_b
 
-for c in changes:
-	print(c)
-	print("\n\n")
+#for c in changes:
+#	print(c)
+#	print("\n\n")
 
 
